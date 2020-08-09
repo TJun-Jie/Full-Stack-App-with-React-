@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
+import { withRouter } from "react-router";
+import {Link} from 'react-router-dom';
 
-export default class CourseDetail extends Component {
+
+class CourseDetailClass extends Component {
     state = {
         course: {},
-        id: ''
     }
     
 
     componentDidMount(){
-      fetch(`http://localhost:5000/api/courses/2`)
+      fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
         .then(res =>res.json())
         .then(course => this.setState({course}))
         .catch(err => console.log('Oh noes!', err))
@@ -24,13 +26,14 @@ export default class CourseDetail extends Component {
             arr.splice(0,1);
             
         }
-        console.log(this.props.location)
+        console.log(course)
+
         return(
             <div>
             <div className="actions--bar">
               <div className="bounds">
-                <div className="grid-100"><span><a className="button" href="update-course.html">Update Course</a><a className="button" href="#">Delete Course</a></span><a
-                    className="button button-secondary" href="index.html">Return to List</a></div>
+                <div className="grid-100"><span><Link to={`/courses/${this.props.match.params.id}/update`} className="button">Update Course</Link><Link className="button" to="/">Delete Course</Link></span><Link
+                    className="button button-secondary"  to="/">Return to List</Link></div>
               </div>
             </div>
             <div className="bounds course--detail">
@@ -69,3 +72,7 @@ export default class CourseDetail extends Component {
         )
     }
 }
+
+const CourseDetail = withRouter(CourseDetailClass);
+
+export default CourseDetail
