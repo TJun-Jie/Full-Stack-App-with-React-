@@ -32,7 +32,12 @@ class CourseDetailClass extends Component {
             <div>
             <div className="actions--bar">
               <div className="bounds">
-                <div className="grid-100"><span><Link to={`/courses/${this.props.match.params.id}/update`} className="button">Update Course</Link><Link className="button" to="/">Delete Course</Link></span><Link
+                <div className="grid-100"><span><Link to={{
+                  pathname:`/courses/${this.props.match.params.id}/update`,
+                  state:{
+                    courseData: course
+                  }
+                }}  className="button">Update Course</Link><Link className="button" to="/">Delete Course</Link></span><Link
                     className="button button-secondary"  to="/">Return to List</Link></div>
               </div>
             </div>
