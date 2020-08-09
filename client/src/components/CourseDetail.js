@@ -2,21 +2,21 @@ import React, {Component} from 'react';
 
 export default class CourseDetail extends Component {
     state = {
-        course: {
-        }
+        course: {},
+        id: ''
     }
+    
 
     componentDidMount(){
-        fetch('http://localhost:5000/api/courses/2')
-      .then(res =>res.json())
-      .then(course => this.setState({course}))
-      .catch(err => console.log('Oh noes!', err))
+      fetch(`http://localhost:5000/api/courses/2`)
+        .then(res =>res.json())
+        .then(course => this.setState({course}))
+        .catch(err => console.log('Oh noes!', err))
     }
 
 
     render() {
         const {course} = this.state;
-        // const materialsNeeded = course.materialsNeeded.split('*');
         const materialsNeeded =course.materialsNeeded;
         let arr = [];
         if(materialsNeeded){
@@ -24,6 +24,7 @@ export default class CourseDetail extends Component {
             arr.splice(0,1);
             
         }
+        console.log(this.props.location)
         return(
             <div>
             <div className="actions--bar">
