@@ -7,12 +7,71 @@ function UserSignUp() {
     const [emailAddress,setEmailAddress] = useState('');
     const [password,setPassword] = useState('');
     const [confirmPassword,setConfirmPassword] = useState('');
+    const [errors, setErrors] = useState([]);
+
+    const user = {
+      firstName,
+      lastName,
+      emailAddress,
+      password
+    }
+
+
+    const handleSubmit =async (e) => {
+      e.preventDefault();
+      if(password !== confirmPassword){
+        console.log('not good')
+      }
+      const userJSON = JSON.stringify(user)
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+        body:  userJSON,
+      })
+      if (response.status === 201) {
+        setErrors([]);
+      }
+      else if (response.status === 400) {
+        return response.json().then(data => {
+          setErrors(data.errors);
+        });
+      }
+      else {
+        throw new Error();
+      }
+
+    }
+
+    const createErrors = () => {
+      console.log(errors)
+      if(errors.length> 0) {
+        return (
+          <div>
+          <h2 className="validation--errors--label">Validation errors</h2>
+          <div className="validation-errors">
+            <ul>
+              {
+                errors.map( (error, index) => (
+                  <li key={index}>{error}</li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        )
+      } else {
+        return ''
+      }
+    }
     return(
         <div className="bounds">
         <div className="grid-33 centered signin">
           <h1>Sign Up</h1>
-          <div>
-            <form>
+            {createErrors()}
+            <div>
+            <form onSubmit={handleSubmit}>
               <div><input 
                 id="firstName" 
                 name="firstName" 
