@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 function UserSignUp(props) {
@@ -24,7 +24,6 @@ function UserSignUp(props) {
       context.data.createUser(user)
       .then( errors => {
         if(errors.length > 0) {
-          console.log(errors)
           setErrors(errors);
         } else{
           console.log(`${emailAddress} is successfully signed up and authenticated`);
@@ -36,10 +35,7 @@ function UserSignUp(props) {
       })
 
     }
-    // useEffect(() => {
-    //   createErrors()
-    //   console.log('use effect')
-    // })
+
 
     const createErrors = () => {
       if(errors.length> 0) {
