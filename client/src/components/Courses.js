@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 export default class Courses extends Component {
     state = {
         data: []
     }
 
     componentDidMount(){
-        fetch('http://localhost:5000/api/courses')
-      .then(res =>res.json())
-      .then(data => this.setState({data}))
-      .catch(err => console.log('Oh noes!', err))
+        axios.get('http://localhost:5000/api/courses')
+        .then(data => this.setState({data: data.data}))
+        .catch(err => console.log('Oh noes!', err))
     }
 
     createCourses = () => {
@@ -22,7 +22,6 @@ export default class Courses extends Component {
     }
 
     render() {
-        console.log(this.state.data)
         return(
             <div className="bounds">
                 {this.createCourses()}

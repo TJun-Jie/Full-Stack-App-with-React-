@@ -5,6 +5,12 @@ function CreateCourse() {
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded]  = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('submitted')
+
+  }
   return(
       <div className="bounds course--detail">
       <h1>Create Course</h1>
@@ -18,7 +24,7 @@ function CreateCourse() {
             </ul>
           </div>
         </div> */}
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid-66">
             <div className="course--header">
               <h4 className="course--label">Course</h4>
@@ -66,7 +72,8 @@ function CreateCourse() {
                           className="" 
                           placeholder="List materials..."
                           value={materialsNeeded}
-                          onChange ={ e => setMaterialsNeeded(e.target.value)}></textarea></div>
+                          onChange ={ e => setMaterialsNeeded(e.target.value)}>
+                        </textarea></div>
                 </li>
               </ul>
             </div>
