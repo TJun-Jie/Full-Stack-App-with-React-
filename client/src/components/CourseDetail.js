@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { withRouter } from "react-router";
 import {Link} from 'react-router-dom';
-import Axios from 'axios';
 
 
 class CourseDetailClass extends Component {
@@ -11,8 +10,9 @@ class CourseDetailClass extends Component {
     
 
     componentDidMount(){
-      Axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
-        .then(course => this.setState({course: course.data}))
+      fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
+        .then(res => res.json())
+        .then(course => this.setState({course}))
         .catch(err => console.log('Oh noes!', err))
     }
 
