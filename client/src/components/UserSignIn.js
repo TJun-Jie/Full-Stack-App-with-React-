@@ -4,12 +4,29 @@ import { Link } from 'react-router-dom';
 function UserSignIn() {
   const [emailAddress,setEmailAddress] = useState('');
   const [password,setPassword] = useState('');
+
+  const handleSubmit =(e) => {
+    e.preventDefault()
+    const credentials = {
+      emailAddress,
+      password
+    }
+    const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
+    fetch('http://localhost:5000/api/users', {
+      headers: {
+        "Authorization": `Basic ${encodedCredentials}`,
+      }
+    })
+      .then(res => res.json())
+      .then(user => console.log(user))
+      .catch(error => console.log(error))
+  }
   return (
       <div className="bounds">
       <div className="grid-33 centered signin">
         <h1>Sign In</h1>
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div><input
               id="emailAddress" 
               name="emailAddress" 
@@ -32,7 +49,7 @@ function UserSignIn() {
           </form>
         </div>
         <p>&nbsp;</p>
-        <p>Don't have a user account? <a href="sign-up.html">Click here</a> to sign up!</p>
+        <p>Don't have a user account? <Link to="/signup">Click here</Link> to sign up!</p>
       </div>
     </div>
   )
