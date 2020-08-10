@@ -12,8 +12,12 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
+import withContext from './Context';
 
+const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignInWithContext = withContext(UserSignIn);
 function App() {
+
 
   return (
     <Router>
@@ -31,10 +35,10 @@ function App() {
             <CourseDetail></CourseDetail>
           </Route>
           <Route path="/signin">
-            <UserSignIn></UserSignIn>
+            <UserSignInWithContext></UserSignInWithContext>
           </Route>
           <Route path="/signup">
-            <UserSignUp></UserSignUp>
+            <UserSignUpWithContext></UserSignUpWithContext>
           </Route>
           <Route path="/">
             <Courses></Courses>

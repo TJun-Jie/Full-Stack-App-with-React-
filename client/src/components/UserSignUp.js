@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-function UserSignUp() {
+function UserSignUp(props) {
     const [firstName,setFirstName] = useState('');
     const [lastName,setLastName] = useState('');
     const [emailAddress,setEmailAddress] = useState('');
@@ -9,44 +9,41 @@ function UserSignUp() {
     const [confirmPassword,setConfirmPassword] = useState('');
     const [errors, setErrors] = useState([]);
 
+    const {context} = props
+
     const user = {
       firstName,
       lastName,
       emailAddress,
       password
     }
-
+    let history = useHistory();
 
     const handleSubmit =async (e) => {
       e.preventDefault();
-      if(password !== confirmPassword){
-        console.log('not good')
-      }
-      const userJSON = JSON.stringify(user)
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-        body:  userJSON,
+      context.data.createUser(user)
+      .then( errors => {
+        if(errors.length > 0) {
+          console.log(errors)
+          setErrors(errors);
+        } else{
+          console.log(`${emailAddress} is successfully signed up and authenticated`);
+          context.actions.signIn(emailAddress, password)
+            .then(() => {
+              history.push('/authenticated');
+            })
+        }
       })
-      if (response.status === 201) {
-        setErrors([]);
-      }
-      else if (response.status === 400) {
-        return response.json().then(data => {
-          setErrors(data.errors);
-        });
-      }
-      else {
-        throw new Error();
-      }
 
     }
+    // useEffect(() => {
+    //   createErrors()
+    //   console.log('use effect')
+    // })
 
     const createErrors = () => {
-      console.log(errors)
       if(errors.length> 0) {
+        console.log('true')
         return (
           <div>
           <h2 className="validation--errors--label">Validation errors</h2>

@@ -1,30 +1,51 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
-function UserSignIn() {
+function UserSignIn(props) {
   const [emailAddress,setEmailAddress] = useState('');
   const [password,setPassword] = useState('');
+  const [errors, setErrors] = useState('');
+
+  let history = useHistory();
+  let location  = useLocation();
+
+  const { from } = location.state || { from: { pathname: '/authenticated' } };
+  const {context} = props;
 
   const handleSubmit =(e) => {
     e.preventDefault()
-    const credentials = {
-      emailAddress,
-      password
-    }
-    const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
-    fetch('http://localhost:5000/api/users', {
-      headers: {
-        "Authorization": `Basic ${encodedCredentials}`,
+    context.actions.signIn(emailAddress, password)
+    .then( user => {
+      if(user === null){
+        setErrors('Sorry, Sign in was unsuccessful.')
+      } else {
+        history.push(from)
+        console.log(`SUCCESS! ${emailAddress} is now signed in!`);
       }
     })
-      .then(res => res.json())
-      .then(user => console.log(user))
-      .catch(error => console.log(error))
+    .catch( err => {
+      console.log(err);
+      history.push('/error');
+    })
+  }
+
+  const createErrors = () => {
+    console.log(errors)
+    if(errors.length> 0) {
+      return (
+        <div>
+          <h2 className="validation--errors">{errors}</h2>
+        </div>
+      )
+    } else {
+      return ''
+    }
   }
   return (
       <div className="bounds">
       <div className="grid-33 centered signin">
         <h1>Sign In</h1>
+        {createErrors()}
         <div>
           <form onSubmit={handleSubmit}>
             <div><input
