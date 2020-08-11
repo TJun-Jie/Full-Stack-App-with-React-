@@ -1,21 +1,71 @@
 import React, {useState} from 'react';
-import { withRouter } from "react-router";
+import {  useHistory, useRouteMatch, useLocation } from "react-router";
 import { Link } from 'react-router-dom';
 
-function UpdateCourseFunction(props) {
-  const { courseData } = props.location.state
+function UpdateCourse(props) {
+  const history = useHistory();
+  const match = useRouteMatch();
+  const location = useLocation();
+  const { courseData } = location.state
 
 
   const [title, setTitle] = useState(courseData.title);
   const [description, setDescription] = useState(courseData.description);
   const [estimatedTime, setEstimatedTime] = useState(courseData.estimatedTime ? courseData.estimatedTime : '');
   const [materialsNeeded, setMaterialsNeeded]  = useState(courseData.materialsNeeded ? courseData.materialsNeeded : '');
+  const [errors, setErrors] = useState([]);
+  const {context} = props;
+  const {emailAddress, password,data, authenticatedUser} = context;
+
+  const courseId = match.params.id;
+
+  const course = {
+    title,
+    description,
+    estimatedTime,
+    materialsNeeded,
+    userId: authenticatedUser.id
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    data.updateCourse(courseId, course, {emailAddress, password})
+      .then(errors => {
+        if(errors.length>0){
+          setErrors(errors)
+        }else {
+          history.push('/');
+        }
+      })
+  }
+  const createErrors = () => {
+    if(errors.length> 0) {
+      console.log('true')
+      return (
+        <div>
+        <h2 className="validation--errors--label">Validation errors</h2>
+        <div className="validation-errors">
+          <ul>
+            {
+              errors.map( (error, index) => (
+                <li key={index}>{error}</li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      )
+    } else {
+      return ''
+    }
+  }
   
     return(
         <div className="bounds course--detail">
         <h1>Update Course</h1>
         <div>
-          <form>
+          {createErrors()}
+          <form onSubmit={handleSubmit}>
             <div className="grid-66">
               <div className="course--header">
                 <h4 className="course--label">Course</h4>
@@ -77,6 +127,5 @@ function UpdateCourseFunction(props) {
 }
 
   
-const UpdateCourse = withRouter(UpdateCourseFunction);
 
 export default UpdateCourse;
