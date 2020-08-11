@@ -14,6 +14,7 @@ import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import UserSignOut from './components/UserSignOut';
 import withContext from './Context';
+import PrivateRoute from './PrivateRoute';
 
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
@@ -28,24 +29,12 @@ function App() {
         <HeaderWithContext></HeaderWithContext>
         <hr></hr>
         <Switch>
-          <Route path="/courses/create">
-            <CreateCourse></CreateCourse>
-          </Route>
-          <Route path="/courses/:id/update">
-            <UpdateCourse></UpdateCourse>
-          </Route>
-          <Route path="/courses/:id">
-            <CourseDetail></CourseDetail>
-          </Route>
-          <Route path="/signin">
-            <UserSignInWithContext></UserSignInWithContext>
-          </Route>
-          <Route path="/signup">
-            <UserSignUpWithContext></UserSignUpWithContext>
-          </Route>
-          <Route path="/signout">
-            <UserSignOutWithContext></UserSignOutWithContext>
-          </Route>
+          <PrivateRoute path="/courses/create" component={CreateCourse}/>  
+          <PrivateRoute path="/courses/:id/update" component={UpdateCourse}/>
+          <Route path="/courses/:id" component={CourseDetail}/>
+          <Route path="/signin" component={UserSignInWithContext}/>
+          <Route path="/signup" component={UserSignUpWithContext}/>
+          <Route path="/signout" component={UserSignOutWithContext}/>
           <Route path="/">
             <Courses></Courses>
           </Route>

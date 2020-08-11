@@ -50,4 +50,8 @@ export default class Data {
       throw new Error();
     }
   }
+
+  // async getAllCourses() {
+  //   const response
+  // }
 }
