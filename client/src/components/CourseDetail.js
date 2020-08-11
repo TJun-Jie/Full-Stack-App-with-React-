@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 class CourseDetailClass extends Component {
     state = {
         course: {},
+        errors: []
     }
     
 
@@ -16,6 +17,43 @@ class CourseDetailClass extends Component {
         .catch(err => console.log('Oh noes!', err))
     }
 
+    handleDelete= () => {
+      const context = this.props.context;
+      const {emailAddress, password,data} = context;
+      const courseId = this.props.match.params.id;
+      data.deleteCourse(courseId, {emailAddress, password})
+      .then(errors => {
+        if(errors.length>0){
+          this.setState( () => ({errors: errors}))
+          console.log(errors)
+        }else {
+          this.props.history.push('/');
+        }
+      })
+    }
+
+    createErrors = () => {
+      if(this.state.errors.length> 0) {
+        console.log('true')
+        return (
+          <div>
+          <h2 className="validation--errors--label">Validation errors:</h2>
+          <div className="validation-errors">
+            <ul>
+              {
+                this.state.errors.map( (error, index) => (
+                  <li key={index}>{error}</li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        )
+      } else {
+        return ''
+      }
+    }
+
 
     render() {
         const {course} = this.state;
@@ -24,8 +62,8 @@ class CourseDetailClass extends Component {
         if(materialsNeeded){
             arr =materialsNeeded.split('*');
             arr.splice(0,1);
-            
         }
+        console.log(this.props.context)
 
         return(
             <div>
@@ -36,11 +74,12 @@ class CourseDetailClass extends Component {
                   state:{
                     courseData: course
                   }
-                }}  className="button">Update Course</Link><Link className="button" to="/">Delete Course</Link></span><Link
+                }}  className="button">Update Course</Link><button className="button" onClick={this.handleDelete}>Delete Course</button></span><Link
                     className="button button-secondary"  to="/">Return to List</Link></div>
               </div>
             </div>
             <div className="bounds course--detail">
+                {this.createErrors()}
               <div className="grid-66">
                 <div className="course--header">
                   <h4 className="course--label">Course</h4>
