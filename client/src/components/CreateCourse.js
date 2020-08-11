@@ -1,29 +1,65 @@
 import React , {useState} from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-function CreateCourse() {
+function CreateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded]  = useState('');
+  const [errors, setErrors] = useState([]);
+
+  const {context} = props
+  const {emailAddress, password,data, authenticatedUser} = context
+
+  const history = useHistory();
+
+  const course = {
+    title,
+    description,
+    estimatedTime,
+    materialsNeeded,
+    userId: authenticatedUser.id
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submitted')
+    data.createCourse(course, {emailAddress, password})
+      .then(errors => {
+        if(errors.length>0){
+          setErrors(errors)
+        }else {
+          history.push('/');
+        }
+      })
+      
+  }
 
+  const createErrors = () => {
+    if(errors.length> 0) {
+      console.log('true')
+      return (
+        <div>
+        <h2 className="validation--errors--label">Validation errors</h2>
+        <div className="validation-errors">
+          <ul>
+            {
+              errors.map( (error, index) => (
+                <li key={index}>{error}</li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      )
+    } else {
+      return ''
+    }
   }
   return(
       <div className="bounds course--detail">
       <h1>Create Course</h1>
       <div>
-        {/* <div>
-          <h2 className="validation--errors--label">Validation errors</h2>
-          <div className="validation-errors">
-            <ul>
-              <li>Please provide a value for "Title"</li>
-              <li>Please provide a value for "Description"</li>
-            </ul>
-          </div>
-        </div> */}
+        {createErrors()}
         <form onSubmit={handleSubmit}>
           <div className="grid-66">
             <div className="course--header">
@@ -78,7 +114,7 @@ function CreateCourse() {
               </ul>
             </div>
           </div>
-          <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><button className="button button-secondary">Cancel</button></div>
+          <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><Link to="/" className="button button-secondary">Cancel</Link></div>
         </form>
       </div>
     </div>

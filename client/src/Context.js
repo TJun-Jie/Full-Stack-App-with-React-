@@ -11,12 +11,14 @@ export class Provider extends Component {
     this.data = new Data();
   }
   state = {
-    authenticatedUser: Cookies.getJSON('authenticatedUser') || null
+    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+    emailAddress: Cookies.getJSON('emailAddress') || null,
+    password: Cookies.getJSON('password') || null
   }
 
 
   render() {
-    const {authenticatedUser} = this.state;
+    const {authenticatedUser, emailAddress, password} = this.state;
     
     const value = {
       data: this.data,
@@ -24,7 +26,9 @@ export class Provider extends Component {
         signIn: this.signIn,
         signOut: this.signOut
       },
-      authenticatedUser
+      authenticatedUser,
+      emailAddress,
+      password
     }
     return (
       <Context.Provider value={value}>
@@ -40,9 +44,13 @@ export class Provider extends Component {
       this.setState( () => {
         return{
           authenticatedUser: user,
+          emailAddress,
+          password
         }
       })
       Cookies.set('authenticatedUser',user, {expires: 1})
+      Cookies.set('emailAddress' , emailAddress, {expires: 1})
+      Cookies.set('password' , password, {expires: 1})
     }
     return user;
   }
@@ -52,6 +60,8 @@ export class Provider extends Component {
       authenticatedUser: null
     })
     Cookies.remove('authenticatedUser')
+    Cookies.remove('emailAddress')
+    Cookies.remove('password')
   }
 }
 
