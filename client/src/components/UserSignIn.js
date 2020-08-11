@@ -30,7 +30,6 @@ function UserSignIn(props) {
   }
 
   const createErrors = () => {
-    console.log(errors)
     if(errors.length> 0) {
       return (
         <div>

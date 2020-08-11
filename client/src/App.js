@@ -12,17 +12,20 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
+import UserSignOut from './components/UserSignOut';
 import withContext from './Context';
 
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
+const HeaderWithContext = withContext(Header);
+const UserSignOutWithContext = withContext(UserSignOut);
 function App() {
 
 
   return (
     <Router>
       <div>
-        <Header></Header>
+        <HeaderWithContext></HeaderWithContext>
         <hr></hr>
         <Switch>
           <Route path="/courses/create">
@@ -39,6 +42,9 @@ function App() {
           </Route>
           <Route path="/signup">
             <UserSignUpWithContext></UserSignUpWithContext>
+          </Route>
+          <Route path="/signout">
+            <UserSignOutWithContext></UserSignOutWithContext>
           </Route>
           <Route path="/">
             <Courses></Courses>
