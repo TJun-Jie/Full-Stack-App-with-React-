@@ -4,14 +4,24 @@ export default class Courses extends Component {
     state = {
         data: []
     }
-
+    // Fetch data when component first gets rendered
     componentDidMount(){
         fetch('http://localhost:5000/api/courses')
-            .then(res => res.json())
+            .then(res => {
+                // successfully fetched data
+                if(res.status===200){
+                    return res.json();
+                }
+                // server error
+                else if (res.status ===500){
+                    return this.props.history.push('/error');
+                }
+            })
+            // set data to state
             .then(data => this.setState({data}))
             .catch(err => console.log('Oh noes!', err))
     }
-
+    // function to create jsx for all the courses by mapping the data one by one
     createCourses = () => {
         return this.state.data.map(course => (
             <div key={course.id} className="grid-33"><Link to={`/courses/${course.id}`} className="course--module course--link" >

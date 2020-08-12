@@ -14,18 +14,24 @@ class UpdateCourseClass extends Component {
     fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
       .then(res => {
         if(res.status === 200){
-          return res.json()
+          return res.json();
         }
         else if(res.status === 404){
-          this.props.history.push('/notFound')
+          this.props.history.push('/notFound');
+        } else if (res.status === 500){
+          this.props.history.push('error');
         }
       })
       .then(course => {
         if(this._isMounted){
-          this.setState({course})
+          this.setState({course});
         }
       })
       .catch(err => console.log('Oh noes!', err))
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   
@@ -81,7 +87,14 @@ class UpdateCourseClass extends Component {
   }
   render() {
     const {title, description, estimatedTime, materialsNeeded} = this.state.course;
-    const {firstName, lastName} = this.props.context.authenticatedUser;
+    let firstName = '';
+    let lastName = '';
+    const courseOwner = this.state.course.User;
+    if(courseOwner){
+      firstName = courseOwner.firstName;
+      lastName = courseOwner.lastName;
+    }
+
     return(
         <div className="bounds course--detail">
         <h1>Update Course</h1>

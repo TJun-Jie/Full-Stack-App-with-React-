@@ -2,6 +2,7 @@ import React , {useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 function CreateCourse(props) {
+  // Setting state with hooks
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
@@ -13,6 +14,7 @@ function CreateCourse(props) {
 
   const history = useHistory();
 
+  // Data that will be submitted to the api
   const course = {
     title,
     description,
@@ -21,22 +23,27 @@ function CreateCourse(props) {
     userId: authenticatedUser.id
   }
 
+  // Triggered when the form is submitted 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Interacts with api to create course.
     data.createCourse(course, {emailAddress, password})
       .then(errors => {
+        // If there are errors, show the errors.
         if(errors.length>0){
           setErrors(errors)
         }else {
+          // If successful, redirect to the index page.
           history.push('/');
         }
       })
       
   }
-
+  
+  // Function to create jsx for errors
   const createErrors = () => {
+    // if there are errors
     if(errors.length> 0) {
-      console.log('true')
       return (
         <div>
         <h2 className="validation--errors--label">Validation errors</h2>
@@ -51,7 +58,9 @@ function CreateCourse(props) {
         </div>
       </div>
       )
-    } else {
+    } 
+    // If there are no errrors.
+    else {
       return ''
     }
   }

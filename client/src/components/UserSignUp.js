@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 function UserSignUp(props) {
+    // setting state
     const [firstName,setFirstName] = useState('');
     const [lastName,setLastName] = useState('');
     const [emailAddress,setEmailAddress] = useState('');
@@ -18,6 +19,8 @@ function UserSignUp(props) {
       password
     }
     let history = useHistory();
+    let location = useLocation();
+    const { from } = location.state || { from: { pathname: '/' } };
 
     const handleSubmit =async (e) => {
       e.preventDefault();
@@ -29,7 +32,7 @@ function UserSignUp(props) {
           console.log(`${emailAddress} is successfully signed up and authenticated`);
           context.actions.signIn(emailAddress, password)
             .then(() => {
-              history.push('/authenticated');
+              history.push(from);
             })
         }
       })

@@ -20,6 +20,8 @@ class CourseDetailClass extends Component {
           }
           else if(res.status === 404){
             this.props.history.push('/notFound')
+          }else if (res.status === 500){
+            this.props.history.push('error');
           }
         })
         .then(course => {
@@ -75,8 +77,7 @@ class CourseDetailClass extends Component {
       const userId = this.state.course.userId
       const authenticatedUser = this.props.context.authenticatedUser 
       if(authenticatedUser){
-        // if(userId === authenticatedUser.id){
-        if(true){
+        if(userId === authenticatedUser.id){
           return(
             <div className="grid-100">
               <span>
@@ -127,7 +128,6 @@ class CourseDetailClass extends Component {
         if(courseOwner){
           firstName = courseOwner.firstName;
           lastName = courseOwner.lastName;
-
         }
         const materialsNeeded =course.materialsNeeded;
         let arr = [];

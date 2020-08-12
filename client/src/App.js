@@ -46,8 +46,6 @@ function App() {
           <Route path="/error" component={UnhandledError} />
           <Route component={NotFound} />
         </Switch>
-        
-
       </div>
 
     </Router>
