@@ -73,7 +73,10 @@ export default class Data {
       return response.json().then(data => data.errors);
     }
     else if(response.status === 403) {
-      return response.json().then(data => data.message);
+      return 403;
+    }
+    else if(response.status === 404) {
+      return 404;
     }
     else{
       throw new Error();
@@ -88,7 +91,10 @@ export default class Data {
       return response.json().then(data => data.errors);
     }
     else if(response.status === 403) {
-      return response.json().then(data => data.message);
+      return 403;
+    }
+    else if(response.status === 404) {
+      return 404;
     }
     else{
       throw new Error();

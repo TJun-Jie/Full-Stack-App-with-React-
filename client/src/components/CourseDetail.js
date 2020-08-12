@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 
 
 class CourseDetailClass extends Component {
+    _isMounted = false;
     state = {
         course: {},
         errors: []
@@ -11,10 +12,26 @@ class CourseDetailClass extends Component {
     
 
     componentDidMount(){
+      this._isMounted= true;
       fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
-        .then(res => res.json())
-        .then(course => this.setState({course}))
+        .then(res => {
+          if(res.status === 200){
+            return res.json()
+          }
+          else if(res.status === 404){
+            this.props.history.push('/notFound')
+          }
+        })
+        .then(course => {
+          if(this._isMounted){
+            this.setState({course})
+          }
+        })
         .catch(err => console.log('Oh noes!', err))
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
     }
 
     handleDelete= () => {
@@ -55,33 +72,44 @@ class CourseDetailClass extends Component {
     }
 
     createButtons = () => {
-      if(this.state.course.userId === this.props.context.authenticatedUser.id){
-        return(
-          <div className="grid-100">
-            <span>
-              <Link 
-                to={{
-                  pathname:`/courses/${this.props.match.params.id}/update`,
-                  state:{
-                    courseData: this.state.course
-                  }
-                }}  
-                className="button">Update Course
+      const userId = this.state.course.userId
+      const authenticatedUser = this.props.context.authenticatedUser 
+      if(authenticatedUser){
+        // if(userId === authenticatedUser.id){
+        if(true){
+          return(
+            <div className="grid-100">
+              <span>
+                <Link 
+                  to={{
+                    pathname:`/courses/${this.props.match.params.id}/update`,
+                    state:{
+                      courseData: this.state.course
+                    }
+                  }}  
+                  className="button">Update Course
+                </Link>
+                <button 
+                  className="button" 
+                  onClick={this.handleDelete}>Delete Course
+                </button>
+              </span>
+              <Link
+                className="button button-secondary"  
+                to="/">
+                Return to List
               </Link>
-              <button 
-                className="button" 
-                onClick={this.handleDelete}>Delete Course
-              </button>
-            </span>
-            <Link
-              className="button button-secondary"  
-              to="/">
-              Return to List
-            </Link>
-          </div>
-        )
-      }
-      else{
+            </div>
+          )
+        }
+        else{
+          return (
+            <div className="grid-100">
+              <Link className="button button-secondary"  to="/">Return to List</Link>
+            </div>
+          )
+        } 
+      } else {
         return (
           <div className="grid-100">
             <Link className="button button-secondary"  to="/">Return to List</Link>
@@ -93,15 +121,14 @@ class CourseDetailClass extends Component {
 
     render() {
         const {course} = this.state;
-
         let firstName = '';
         let lastName = '';
         const courseOwner = course.User;
         if(courseOwner){
           firstName = courseOwner.firstName;
           lastName = courseOwner.lastName;
+
         }
-        
         const materialsNeeded =course.materialsNeeded;
         let arr = [];
         if(materialsNeeded){

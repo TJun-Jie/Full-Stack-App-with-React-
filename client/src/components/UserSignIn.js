@@ -9,7 +9,7 @@ function UserSignIn(props) {
   let history = useHistory();
   let location  = useLocation();
 
-  const { from } = location.state || { from: { pathname: '/authenticated' } };
+  const { from } = location.state || { from: { pathname: '/' } };
   const {context} = props;
 
   const handleSubmit =(e) => {
