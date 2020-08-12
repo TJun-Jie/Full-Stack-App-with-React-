@@ -54,28 +54,67 @@ class CourseDetailClass extends Component {
       }
     }
 
+    createButtons = () => {
+      if(this.state.course.userId === this.props.context.authenticatedUser.id){
+        return(
+          <div className="grid-100">
+            <span>
+              <Link 
+                to={{
+                  pathname:`/courses/${this.props.match.params.id}/update`,
+                  state:{
+                    courseData: this.state.course
+                  }
+                }}  
+                className="button">Update Course
+              </Link>
+              <button 
+                className="button" 
+                onClick={this.handleDelete}>Delete Course
+              </button>
+            </span>
+            <Link
+              className="button button-secondary"  
+              to="/">
+              Return to List
+            </Link>
+          </div>
+        )
+      }
+      else{
+        return (
+          <div className="grid-100">
+            <Link className="button button-secondary"  to="/">Return to List</Link>
+          </div>
+        )
+      }
+    }
+
 
     render() {
         const {course} = this.state;
+
+        let firstName = '';
+        let lastName = '';
+        const courseOwner = course.User;
+        if(courseOwner){
+          firstName = courseOwner.firstName;
+          lastName = courseOwner.lastName;
+        }
+        
         const materialsNeeded =course.materialsNeeded;
         let arr = [];
         if(materialsNeeded){
             arr =materialsNeeded.split('*');
             arr.splice(0,1);
         }
-        console.log(this.props.context)
+        // consol/e.log(course)
 
         return(
             <div>
             <div className="actions--bar">
               <div className="bounds">
-                <div className="grid-100"><span><Link to={{
-                  pathname:`/courses/${this.props.match.params.id}/update`,
-                  state:{
-                    courseData: course
-                  }
-                }}  className="button">Update Course</Link><button className="button" onClick={this.handleDelete}>Delete Course</button></span><Link
-                    className="button button-secondary"  to="/">Return to List</Link></div>
+                {this.createButtons()}
               </div>
             </div>
             <div className="bounds course--detail">
@@ -84,7 +123,7 @@ class CourseDetailClass extends Component {
                 <div className="course--header">
                   <h4 className="course--label">Course</h4>
                   <h3 className="course--title">{course.title}</h3>
-                  <p>By Joe Smith</p>
+                  <p>By {firstName} {lastName}</p>
                 </div>
                 <div className="course--description">
                     <p>{course.description}</p>

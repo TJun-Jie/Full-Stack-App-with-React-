@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 function Header(props){
     const {context} = props;
     const authenticatedUser = context.authenticatedUser
-    console.log(authenticatedUser)
+    // console.log(authenticatedUser)
     return(
         <div className="header">
             <div className="bounds">

@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const {Course} = require('../models')
 const { asyncHandler, authenticateUser} = require('./helper');
+const {User} = require('../models');
 
 // List every single course available
 router.get('/courses', asyncHandler( async (req, res ) => {
@@ -22,7 +23,8 @@ router.get('/courses/:id', asyncHandler( async (req, res , next) => {
         },
         attributes: {
             exclude: ['createdAt' , 'updatedAt']
-        }     
+        },
+        include: User
     });
     // If the course exists
     if(specificCourse){
