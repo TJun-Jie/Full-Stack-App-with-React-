@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { withRouter } from "react-router";
 import {Link} from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+
 
 
 class CourseDetailClass extends Component {
@@ -129,13 +131,6 @@ class CourseDetailClass extends Component {
           firstName = courseOwner.firstName;
           lastName = courseOwner.lastName;
         }
-        const materialsNeeded =course.materialsNeeded;
-        let arr = [];
-        if(materialsNeeded){
-            arr =materialsNeeded.split('*');
-            arr.splice(0,1);
-        }
-        // consol/e.log(course)
 
         return(
             <div>
@@ -153,7 +148,7 @@ class CourseDetailClass extends Component {
                   <p>By {firstName} {lastName}</p>
                 </div>
                 <div className="course--description">
-                    <p>{course.description}</p>
+                  <ReactMarkdown source={course.description} />
                 </div>
               </div>
               <div className="grid-25 grid-right">
@@ -166,11 +161,7 @@ class CourseDetailClass extends Component {
                     <li className="course--stats--list--item">
                       <h4>Materials Needed</h4>
                       <ul>
-                        {
-                            arr.map( (material, index) => (
-                                <li key={index}>{material}</li>
-                            ))
-                        }
+                        <ReactMarkdown source={course.materialsNeeded}></ReactMarkdown>
                       </ul>
                     </li>
                   </ul>
