@@ -5,10 +5,14 @@ import { Link } from 'react-router-dom';
 class UpdateCourseClass extends Component {
   _isMounted = false;
   state = {
-    course: {},
     errors: [],
+    title: '',
+    description: '',
+    estimatedTime: '',
+    materialsNeeded: '',
+    courseOwner: {}
   }
-
+  // Fetch data of the course that is being updated 
   componentDidMount(){
     this._isMounted= true;
     fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
@@ -24,7 +28,12 @@ class UpdateCourseClass extends Component {
       })
       .then(course => {
         if(this._isMounted){
-          this.setState({course});
+          this.setState({title: course.title});
+          this.setState({description: course.description});
+          this.setState({estimatedTime: course.estimatedTime});
+          this.setState({materialsNeeded: course.materialsNeeded});
+          this.setState({courseOwner: course.User});
+
         }
       })
       .catch(err => console.log('Oh noes!', err))
@@ -34,11 +43,13 @@ class UpdateCourseClass extends Component {
     this._isMounted = false;
   }
 
-  
-  handleSubmit(e) {
-    const context = this.props.context;
+  // Submit event handler
+  handleSubmit= (e)  => {
+    e.preventDefault();
+    const {context} = this.props;
     const {emailAddress, password,data, authenticatedUser} = context;
     const courseId = this.props.match.params.id;
+    // Data that is going to be sent to the api 
     const course = {
       title: this.state.title,
       description: this.state.description,
@@ -86,10 +97,10 @@ class UpdateCourseClass extends Component {
     }
   }
   render() {
-    const {title, description, estimatedTime, materialsNeeded} = this.state.course;
+    const {title, description, estimatedTime, materialsNeeded} = this.state;
     let firstName = '';
     let lastName = '';
-    const courseOwner = this.state.course.User;
+    const courseOwner = this.state.courseOwner;
     if(courseOwner){
       firstName = courseOwner.firstName;
       lastName = courseOwner.lastName;

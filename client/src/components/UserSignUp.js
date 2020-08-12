@@ -12,6 +12,7 @@ function UserSignUp(props) {
 
     const {context} = props
 
+    // Data that is going to be sent to the api
     const user = {
       firstName,
       lastName,
@@ -24,14 +25,19 @@ function UserSignUp(props) {
 
     const handleSubmit =async (e) => {
       e.preventDefault();
+      // Interacts with the api to create user in the database
       context.data.createUser(user)
+      // Validation errors
       .then( errors => {
         if(errors.length > 0) {
           setErrors(errors);
-        } else{
+        } 
+        // Successfully created new user and sign in the user as well 
+        else{
           console.log(`${emailAddress} is successfully signed up and authenticated`);
           context.actions.signIn(emailAddress, password)
             .then(() => {
+              // Redirects to the home page 
               history.push(from);
             })
         }

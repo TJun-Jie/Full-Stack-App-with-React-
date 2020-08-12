@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 
-
 class CourseDetailClass extends Component {
     _isMounted = false;
     state = {
@@ -12,16 +11,19 @@ class CourseDetailClass extends Component {
         errors: []
     }
     
-
+    // Fetch data after components first renders
     componentDidMount(){
       this._isMounted= true;
       fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
         .then(res => {
+          // Data fetching successful
           if(res.status === 200){
             return res.json()
           }
+          // Course does not exists
           else if(res.status === 404){
             this.props.history.push('/notFound')
+            // server error
           }else if (res.status === 500){
             this.props.history.push('error');
           }
@@ -33,26 +35,29 @@ class CourseDetailClass extends Component {
         })
         .catch(err => console.log('Oh noes!', err))
     }
-
+    // does not set state when component is not mounted
     componentWillUnmount() {
       this._isMounted = false;
     }
-
+    // delete event handler
     handleDelete= () => {
       const context = this.props.context;
       const {emailAddress, password,data} = context;
       const courseId = this.props.match.params.id;
+      // Interacts with the api to delete the course from the data base
       data.deleteCourse(courseId, {emailAddress, password})
       .then(errors => {
+        // Deletion is unsuccessful
         if(errors.length>0){
           this.setState( () => ({errors: errors}))
           console.log(errors)
+          // Redirects user to home page if deletion is successful
         }else {
           this.props.history.push('/');
         }
       })
     }
-
+    // Creates jsx tags to render errors if there are any
     createErrors = () => {
       if(this.state.errors.length> 0) {
         console.log('true')
