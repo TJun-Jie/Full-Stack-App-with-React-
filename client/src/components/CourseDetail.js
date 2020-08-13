@@ -14,16 +14,20 @@ class CourseDetailClass extends Component {
     // Fetch data after components first renders
     componentDidMount(){
       this._isMounted= true;
+
+      /**
+       * fetch data of a single course with id
+       * @returns data of course if HTTP response is 200 (success)
+       * If HTTP response is 404(Not Found) , redirect user to the notfound route.
+       * If HTTP response is 500(Internal server error), redirect user to error route.
+       */
       fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
         .then(res => {
-          // Data fetching successful
           if(res.status === 200){
             return res.json()
           }
-          // Course does not exists
           else if(res.status === 404){
-            this.props.history.push('/notFound')
-            // server error
+            this.props.history.push('/notfound')
           }else if (res.status === 500){
             this.props.history.push('error');
           }
@@ -35,11 +39,18 @@ class CourseDetailClass extends Component {
         })
         .catch(err => console.log('Oh noes!', err))
     }
+
     // does not set state when component is not mounted
     componentWillUnmount() {
       this._isMounted = false;
     }
-    // delete event handler
+    /**
+     * Delete event handler. 
+     * Deletes course when the delete button is clicked
+     * Only the user who created the course will have permission to delete the course
+     * If Deletion is successful, redirects the user to home page.
+     * If status code is 500(internal server error), redirects user to the error page
+     */
     handleDelete= () => {
       const context = this.props.context;
       const {emailAddress, password,data} = context;
@@ -82,7 +93,11 @@ class CourseDetailClass extends Component {
         return ''
       }
     }
-
+    /**
+     * Creates buttons of the course detail component according to the state of the app
+     * If the user owns the course, the update course and delete course will be shown
+     * If the user does not own the course, the user will only be able to see return to list.
+     */
     createButtons = () => {
       const userId = this.state.course.userId
       const authenticatedUser = this.props.context.authenticatedUser 
