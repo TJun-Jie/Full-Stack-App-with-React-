@@ -34,7 +34,7 @@ export default class Data {
       return null;
     }
     else {
-      throw new Error();
+      return 500;
     }
   }
   // Interacts with the api to createUser, for sign up purposes
@@ -51,7 +51,7 @@ export default class Data {
       });
     }
     else {
-      throw new Error();
+      return 500;
     }
   }
   // Interacts with the api to create course
@@ -66,7 +66,7 @@ export default class Data {
       return response.json().then(data => data.errors);
     }
     else{
-      throw new Error();
+      return 500;
     }
   }
 
@@ -89,7 +89,7 @@ export default class Data {
       return 404;
     }
     else{
-      throw new Error();
+      return 500;
     }
   }
   // Interacts with the api to delete course.
@@ -108,7 +108,7 @@ export default class Data {
       return 404;
     }
     else{
-      throw new Error();
+      return 500;
     }
   }
 }

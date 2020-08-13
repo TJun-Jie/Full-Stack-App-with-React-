@@ -29,9 +29,12 @@ function CreateCourse(props) {
     // Interacts with api to create course.
     data.createCourse(course, {emailAddress, password})
       .then(errors => {
+        if(errors === 500){
+          history.push('/error');
+        }
         // If there are errors, show the errors.
         if(errors.length>0){
-          setErrors(errors)
+          setErrors(errors);
         }else {
           // If successful, redirect to the index page.
           history.push('/');

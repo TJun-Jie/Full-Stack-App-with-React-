@@ -18,7 +18,11 @@ function UserSignIn(props) {
     .then( user => {
       if(user === null){
         setErrors('Sorry, Sign in was unsuccessful.')
-      } else {
+      }
+      else if(user === 500){
+        history.push('/error');
+      }
+       else  {
         history.push(from)
         console.log(`SUCCESS! ${emailAddress} is now signed in!`);
       }

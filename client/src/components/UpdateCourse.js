@@ -64,16 +64,19 @@ class UpdateCourseClass extends Component {
     e.preventDefault();
     data.updateCourse(courseId, course, {emailAddress, password})
       .then(errors => {
+        if(errors === 500) {
+          this.props.history.push('/error');
+        }
         if(errors.length>0){
-          this.setState({errors})
+          this.setState({errors});
         }
         // If user is does not have permission to update course
         else if (errors ===403){
-          this.props.history.push('/forbidden')
+          this.props.history.push('/forbidden');
         }
 
         else if (errors ===404){
-          this.props.history.push('/notfound')
+          this.props.history.push('/notfound');
         }
         else {
           this.props.history.push('/');

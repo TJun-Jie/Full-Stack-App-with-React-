@@ -30,7 +30,10 @@ function UserSignUp(props) {
         context.data.createUser(user)
         // Validation errors
         .then( errors => {
-          if(errors.length > 0) {
+          if(errors === 500){
+            history.push('/error');
+          }
+          else if(errors.length > 0) {
             setErrors(errors);
           } 
           // Successfully created new user and sign in the user as well 

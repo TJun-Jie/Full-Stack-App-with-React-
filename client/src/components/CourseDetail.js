@@ -47,8 +47,11 @@ class CourseDetailClass extends Component {
       // Interacts with the api to delete the course from the data base
       data.deleteCourse(courseId, {emailAddress, password})
       .then(errors => {
+        if(errors === 500){
+          this.history.push('error');
+        }
         // Deletion is unsuccessful
-        if(errors.length>0){
+        else if(errors.length>0){
           this.setState( () => ({errors: errors}))
           console.log(errors)
           // Redirects user to home page if deletion is successful
