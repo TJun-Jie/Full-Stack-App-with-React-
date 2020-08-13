@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
 import './App.css';
 import Header from './components/Header';
@@ -44,7 +45,8 @@ function App() {
           <Route exact path="/" component={Courses}/>
           <Route path="/forbidden" component={Forbidden} />
           <Route path="/error" component={UnhandledError} />
-          <Route component={NotFound} />
+          <Route path="/notfound" component={NotFound} />
+          <Redirect to="/notfound" />
         </Switch>
       </div>
 
