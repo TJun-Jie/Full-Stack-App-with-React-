@@ -23,6 +23,15 @@ function UserSignUp(props) {
     let location = useLocation();
     const { from } = location.state || { from: { pathname: '/' } };
 
+
+    /**
+     * Submit handler
+     * Creates user with the user data provided by the form
+     * If successful, sign in the user and redirect user to his previous page or the main page
+     * If it is a validation error, show the errors. 
+     * If it is a internal server error (500), redirect user to the error route.
+     * @param {event} event 
+     */
     const handleSubmit =async (e) => {
       e.preventDefault();
       if(password === confirmPassword){

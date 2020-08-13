@@ -38,7 +38,14 @@ export class Provider extends Component {
     );
   }
 
-  
+  /**
+   * signIn function
+   * Get the user data from api and setState 
+   * Set the cookies with 1 day expiration
+   * @param {string} emailAddress 
+   * @param {string} password \
+   * @returns {object} user 
+   */
   signIn = async (emailAddress, password) => {
     const user = await this.data.getUser(emailAddress, password);
     if(user !== null) {
