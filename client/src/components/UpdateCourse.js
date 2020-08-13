@@ -83,26 +83,7 @@ class UpdateCourseClass extends Component {
         }
       })
   }
-  createErrors = () => {
-    if(this.state.errors.length> 0) {
-      return (
-        <div>
-        <h2 className="validation--errors--label">Validation errors</h2>
-        <div className="validation-errors">
-          <ul>
-            {
-              this.state.errors.map( (error, index) => (
-                <li key={index}>{error}</li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
-      )
-    } else {
-      return ''
-    }
-  }
+
   render() {
     const {title, description, estimatedTime, materialsNeeded} = this.state;
     let firstName = '';
@@ -118,7 +99,7 @@ class UpdateCourseClass extends Component {
         <div className="bounds course--detail">
         <h1>Update Course</h1>
         <div>
-          {this.createErrors()}
+          {this.props.context.actions.createErrors(this.state.errors)}
           <form onSubmit={this.handleSubmit}>
             <div className="grid-66">
               <div className="course--header">

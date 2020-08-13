@@ -52,33 +52,11 @@ function UserSignUp(props) {
 
     }
 
-
-    const createErrors = () => {
-      if(errors.length> 0) {
-        console.log('true')
-        return (
-          <div>
-          <h2 className="validation--errors--label">Validation errors</h2>
-          <div className="validation-errors">
-            <ul>
-              {
-                errors.map( (error, index) => (
-                  <li key={index}>{error}</li>
-                ))
-              }
-            </ul>
-          </div>
-        </div>
-        )
-      } else {
-        return ''
-      }
-    }
     return(
         <div className="bounds">
         <div className="grid-33 centered signin">
           <h1>Sign Up</h1>
-            {createErrors()}
+            {context.actions.createErrors(errors)}
             <div>
             <form onSubmit={handleSubmit}>
               <div><input 
@@ -130,7 +108,7 @@ function UserSignUp(props) {
             </form>
           </div>
           <p>&nbsp;</p>
-          <p>Already have a user account? <a href="sign-in.html">Click here</a> to sign in!</p>
+          <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
         </div>
       </div>
     )

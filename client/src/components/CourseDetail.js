@@ -72,27 +72,7 @@ class CourseDetailClass extends Component {
       })
     }
     // Creates jsx tags to render errors if there are any
-    createErrors = () => {
-      if(this.state.errors.length> 0) {
-        console.log('true')
-        return (
-          <div>
-          <h2 className="validation--errors--label">Validation errors:</h2>
-          <div className="validation-errors">
-            <ul>
-              {
-                this.state.errors.map( (error, index) => (
-                  <li key={index}>{error}</li>
-                ))
-              }
-            </ul>
-          </div>
-        </div>
-        )
-      } else {
-        return ''
-      }
-    }
+
     /**
      * Creates buttons of the course detail component according to the state of the app
      * If the user owns the course, the update course and delete course will be shown
@@ -163,7 +143,6 @@ class CourseDetailClass extends Component {
               </div>
             </div>
             <div className="bounds course--detail">
-                {this.createErrors()}
               <div className="grid-66">
                 <div className="course--header">
                   <h4 className="course--label">Course</h4>

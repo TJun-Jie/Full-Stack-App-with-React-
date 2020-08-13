@@ -43,35 +43,11 @@ function CreateCourse(props) {
       
   }
   
-  // Function to create jsx for errors
-  const createErrors = () => {
-    // if there are errors
-    if(errors.length> 0) {
-      return (
-        <div>
-        <h2 className="validation--errors--label">Validation errors</h2>
-        <div className="validation-errors">
-          <ul>
-            {
-              errors.map( (error, index) => (
-                <li key={index}>{error}</li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
-      )
-    } 
-    // If there are no errrors.
-    else {
-      return ''
-    }
-  }
   return(
       <div className="bounds course--detail">
       <h1>Create Course</h1>
       <div>
-        {createErrors()}
+        {context.actions.createErrors(errors)}
         <form onSubmit={handleSubmit}>
           <div className="grid-66">
             <div className="course--header">

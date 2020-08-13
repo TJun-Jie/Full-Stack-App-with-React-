@@ -24,7 +24,8 @@ export class Provider extends Component {
       data: this.data,
       actions: {
         signIn: this.signIn,
-        signOut: this.signOut
+        signOut: this.signOut,
+        createErrors: this.createErrors
       },
       authenticatedUser,
       emailAddress,
@@ -62,6 +63,28 @@ export class Provider extends Component {
     Cookies.remove('authenticatedUser')
     Cookies.remove('emailAddress')
     Cookies.remove('password')
+  }
+  
+    createErrors = (errors) => {
+      if(errors.length> 0) {
+        console.log('true')
+        return (
+          <div>
+        <h2 className="validation--errors--label">Validation errors:</h2>
+        <div className="validation-errors">
+          <ul>
+            {
+              errors.map( (error, index) => (
+                <li key={index}>{error}</li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      )
+    } else {
+      return ''
+    }
   }
 }
 
