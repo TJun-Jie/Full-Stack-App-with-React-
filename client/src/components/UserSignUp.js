@@ -25,23 +25,27 @@ function UserSignUp(props) {
 
     const handleSubmit =async (e) => {
       e.preventDefault();
-      // Interacts with the api to create user in the database
-      context.data.createUser(user)
-      // Validation errors
-      .then( errors => {
-        if(errors.length > 0) {
-          setErrors(errors);
-        } 
-        // Successfully created new user and sign in the user as well 
-        else{
-          console.log(`${emailAddress} is successfully signed up and authenticated`);
-          context.actions.signIn(emailAddress, password)
-            .then(() => {
-              // Redirects to the home page 
-              history.push(from);
-            })
-        }
-      })
+      if(password === confirmPassword){
+        // Interacts with the api to create user in the database
+        context.data.createUser(user)
+        // Validation errors
+        .then( errors => {
+          if(errors.length > 0) {
+            setErrors(errors);
+          } 
+          // Successfully created new user and sign in the user as well 
+          else{
+            console.log(`${emailAddress} is successfully signed up and authenticated`);
+            context.actions.signIn(emailAddress, password)
+              .then(() => {
+                // Redirects to the home page 
+                history.push(from);
+              })
+          }
+        })
+      } else {
+        setErrors(['Sorry, your password is different from confirm password'])
+      }
 
     }
 
