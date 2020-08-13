@@ -33,10 +33,14 @@ class UpdateCourseClass extends Component {
           this.setState({estimatedTime: course.estimatedTime});
           this.setState({materialsNeeded: course.materialsNeeded});
           this.setState({courseOwner: course.User});
+          if(this.state.courseOwner.id !== this.props.context.authenticatedUser.id){
+            this.props.history.push('/forbidden')
+          }
 
         }
       })
       .catch(err => console.log('Oh noes!', err))
+
   }
 
   componentWillUnmount() {
@@ -105,6 +109,7 @@ class UpdateCourseClass extends Component {
       firstName = courseOwner.firstName;
       lastName = courseOwner.lastName;
     }
+  
 
     return(
         <div className="bounds course--detail">
