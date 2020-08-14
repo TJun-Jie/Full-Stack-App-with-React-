@@ -38,12 +38,12 @@ function UserSignUp(props) {
         // Interacts with the api to create user in the database
         context.data.createUser(user)
         // Validation errors
-        .then( errors => {
-          if(errors === 500){
+        .then( error => {
+          if(error.status === 500){
             history.push('/error');
           }
-          else if(errors.length > 0) {
-            setErrors(errors);
+          else if(error.status ===400) {
+            setErrors(error.errorsArr);
           } 
           // Successfully created new user and sign in the user as well 
           else{
@@ -54,6 +54,10 @@ function UserSignUp(props) {
                 history.push(from);
               })
           }
+        })
+        .catch( err => {
+          console.log(err);
+          history.push('/error');
         })
       } else {
         setErrors(['Sorry, your password is different from confirm password'])

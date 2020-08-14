@@ -81,6 +81,7 @@ export default class Data {
     }
     else {
       error.status= 500;
+      console.log('hi', error)
       return error;
     }
   }
@@ -154,6 +155,7 @@ export default class Data {
     }
     else{
       error.status = 500
+      console.log(error)
       return error
     }
   }

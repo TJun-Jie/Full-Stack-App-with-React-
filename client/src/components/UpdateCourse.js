@@ -27,7 +27,7 @@ class UpdateCourseClass extends Component {
         }
       })
       .then(course => {
-        if(this.state.courseOwner.id !== this.props.context.authenticatedUser.id){
+        if(course.User.id !== this.props.context.authenticatedUser.id){
           this.props.history.push('/forbidden')
         }
         if(this._isMounted){
@@ -36,7 +36,7 @@ class UpdateCourseClass extends Component {
           this.setState({estimatedTime: course.estimatedTime});
           this.setState({materialsNeeded: course.materialsNeeded});
           this.setState({courseOwner: course.User});
-
+          
         }
       })
       .catch(err => console.log('Oh noes!', err))
@@ -71,19 +71,19 @@ class UpdateCourseClass extends Component {
       userId: authenticatedUser.id
     }
     data.updateCourse(courseId, course, {emailAddress, password})
-      .then(errors => {
-        if(errors.status === 500) {
+      .then(error => {
+        if(error.status === 500) {
           this.props.history.push('/error');
         }
-        if(errors.status === 400){
-          this.setState({errors: errors.errorsArr});
+        else if(error.status === 400){
+          this.setState({errors: error.errorsArr});
         }
         // If user is does not have permission to update course
-        else if (errors.status ===403){
+        else if (error.status ===403){
           this.props.history.push('/forbidden');
         }
 
-        else if (errors.status ===404){
+        else if (error.status ===404){
           this.props.history.push('/notfound');
         }
         else {
