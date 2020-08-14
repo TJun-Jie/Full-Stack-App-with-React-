@@ -20,6 +20,7 @@ import Forbidden from './components/Forbidden'
 import UnhandledError from './components/UnhandledError';
 import NotFound from './components/NotFound';
 
+// Adding context api to the components
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
 const HeaderWithContext = withContext(Header);

@@ -12,7 +12,6 @@ export default class Data {
    * @param {object} credentials 
    * @returns {function} fetch api to make request
    */
-  // Function that sets the url and all the options such as header and method and calls the fetch function with the url and options
   api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
     const url = config.apiBaseUrl + path;
   

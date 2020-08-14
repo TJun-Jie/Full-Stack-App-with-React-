@@ -62,7 +62,11 @@ export class Provider extends Component {
     }
     return user;
   }
-
+  /**
+   * signOut function
+   * sets the authenticated user state to null
+   * remove all the cookies stored
+   */
   signOut = () => {
     this.setState({
       authenticatedUser: null

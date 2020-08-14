@@ -23,10 +23,15 @@ function CreateCourse(props) {
     userId: authenticatedUser.id
   }
 
-  // Triggered when the form is submitted 
+  /**
+   *Creates course when form is submitted by passing the data in the form
+   * @param {event} event
+   * redirects the user to home page if course creation is successful
+   * If HTTP status (500), redirects the user to the error page
+   * IF HTTP status (400) bad request, show the validation errros on the form
+   */ 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Interacts with api to create course.
     data.createCourse(course, {emailAddress, password})
       .then(errors => {
         if(errors === 500){

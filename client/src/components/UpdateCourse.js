@@ -47,7 +47,16 @@ class UpdateCourseClass extends Component {
     this._isMounted = false;
   }
 
-  // Submit event handler
+  
+  /**
+   * Submit event handler 
+   * @param {event} e 
+   * No errors will be returned if update course is successful
+   * If HTTP status 500(internal server error), redirects user to error route
+   * If validation errors(400), show the validation errros on the form
+   * If HTTP status 403(No permission), redirect user to the forbidden route
+   * If HTTP status 404(not found) , redirect user to the not found route
+   */
   handleSubmit= (e)  => {
     e.preventDefault();
     const {context} = this.props;

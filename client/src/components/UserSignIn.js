@@ -12,6 +12,15 @@ function UserSignIn(props) {
   const { from } = location.state || { from: { pathname: '/' } };
   const {context} = props;
 
+
+  /**
+   * Submit handler
+   * Signs the user in with the email address and password provided in the form
+   * Redirects user to the previous page if he successfully signed in.
+   * If the credentials does not match, error message will appear on the page.
+   * If there is an internal server error(500), redirect user to the error page
+   * @param {event} e 
+   */
   const handleSubmit =(e) => {
     e.preventDefault()
     context.actions.signIn(emailAddress, password)
