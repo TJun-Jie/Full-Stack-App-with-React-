@@ -1,6 +1,6 @@
 # Full-Stack-App-with-React-
 
-This is an app to manage a hypothetical school's course data. All users can view courses and create a user profile to create courses, update their courses and delete courses. 
+The application will provide a way for users to administer a school database containing information about courses. All users can view courses and create a user profile to create courses, update their courses and delete courses. 
 User login is persisted with cookies and authentication protects private routes.
 In addition, the project will require users to create an account and sign in to make changes to the database.
 
