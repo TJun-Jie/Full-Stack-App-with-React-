@@ -45,22 +45,31 @@ export class Provider extends Component {
    * @param {string} emailAddress 
    * @param {string} password \
    * @returns {object} user 
+   * @returns null for validation errros
+   * @returns 500 for any other errors
    */
   signIn = async (emailAddress, password) => {
     const user = await this.data.getUser(emailAddress, password);
-    if(user !== null) {
-      this.setState( () => {
-        return{
-          authenticatedUser: user,
-          emailAddress,
-          password
-        }
-      })
-      Cookies.set('authenticatedUser',user, {expires: 1})
-      Cookies.set('emailAddress' , emailAddress, {expires: 1})
-      Cookies.set('password' , password, {expires: 1})
+    if(user !== 500){
+      if(user !== null) {
+        this.setState( () => {
+          return{
+            authenticatedUser: user,
+            emailAddress,
+            password
+          }
+        })
+        Cookies.set('authenticatedUser',user, {expires: 1})
+        Cookies.set('emailAddress' , emailAddress, {expires: 1})
+        Cookies.set('password' , password, {expires: 1})
+        return user;
+      } else {
+        return null;
+      }
+    } 
+    else {
+      return 500;
     }
-    return user;
   }
   /**
    * signOut function

@@ -52,26 +52,27 @@ class CourseDetailClass extends Component {
      * If status code is 500(internal server error), redirects user to the error page
      */
     handleDelete= () => {
-      const context = this.props.context;
+      const {context, history} = this.props;
       const {emailAddress, password,data} = context;
       const courseId = this.props.match.params.id;
       // Interacts with the api to delete the course from the data base
       data.deleteCourse(courseId, {emailAddress, password})
-      .then(errors => {
-        if(errors === 500){
-          this.history.push('error');
+      .then(error => {
+        if(error.status === 500){
+          history.push('/error');
         }
         // Deletion is unsuccessful
-        else if(errors.length>0){
-          this.setState( () => ({errors: errors}))
-          console.log(errors)
-          // Redirects user to home page if deletion is successful
-        }else {
-          this.props.history.push('/');
+        else if(error.status === 403){
+          history.push('/forbidden');
+        } else if(error.status === 404){
+          history.push('/notfound');
+        }
+        // Redirects user to home page if deletion is successful
+        else {
+          history.push('/');
         }
       })
     }
-    // Creates jsx tags to render errors if there are any
 
     /**
      * Creates buttons of the course detail component according to the state of the app

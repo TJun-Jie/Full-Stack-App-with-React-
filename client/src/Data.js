@@ -39,15 +39,17 @@ export default class Data {
    * @param {string} emailAddress 
    * @param {string} password 
    * @returns user if successful
-   * If HTTP response of 401 is returned , null is returned as no user is found
-   * If HTTP response of 500 is returned, the status code 500 is returned
+   * @returns null if HTTP status is 401 (unauthorized)
+   * @returns HTTP status of 500 if there's other errros
    */
   async getUser(emailAddress, password) {
     const response = await this.api(`/users`, 'GET', null, true, {emailAddress, password});
+
     if (response.status === 200) {
       return response.json().then(data => data);
     }
-    else if (response.status === 401) {
+    else if (response.status === 401)
+    {
       return null;
     }
     else {
@@ -58,22 +60,28 @@ export default class Data {
   /**
    * creates a user by making a post request to the api route '/users'
    * @param {object} user 
-   * Does not return anything if successful.
-   * returns the validation errors.
-   * If HTTP response of 500 is returned, the status code 500 is returned
+   * @returns empty array if successful
+   * @returns Error object with respective status code if unsuccessful
    */
   async createUser(user) {
     const response = await this.api('/users', 'POST', user);
+    let error ={
+      errorsArr: [],
+      status: null
+    }
     if (response.status === 201) {
       return [];
     }
     else if (response.status === 400) {
       return response.json().then(data => {
-        return data.errors;
+        error.errorsArr = data.errors;
+        error.status = 400;
+        return error;
       });
     }
     else {
-      return 500;
+      error.status= 500;
+      return error;
     }
   }
   /**
@@ -81,22 +89,30 @@ export default class Data {
    * @param {object} user 
    * @param {string} emailAddress
    * @param {string} password
-   * Does not return anything if successful.
-   * returns the validation errors.
-   * If HTTP response of 500 is returned, the status code 500 is returned
+   * @returns empty array if successful
+   * @returns Error object with respective status code if unsuccessful
    */
   async createCourse(course, {emailAddress, password}){
     const response = await this.api('/courses', 'POST', course , true, {emailAddress, password} );
+    let error ={
+      errorsArr: [],
+      status: null
+    }
     // No errors are returned if successful
     if(response.status ===201){
       return [];
     }
     // returns the validation errors.
     else if(response.status === 400) {
-      return response.json().then(data => data.errors);
+      return response.json().then(data => {
+        error.errorsArr = data.errors;
+        error.status = 400;
+        return error
+      });
     }
     else{
-      return 500;
+      error.status = 500
+      return error;
     }
   }
 
@@ -106,31 +122,39 @@ export default class Data {
    * @param {object} course 
    * @param {string} emailAddress
    * @param {string} password
-   * Does not return anything if successful.
-   * If HTTP response is 400 (bad request) returns the validation errors.
-   * If HTTP response is 403 (no permissions) returns status code of 403
-   * If HTTP response is 404 (not found) returns the status code of 404.
-   * If HTTP response of 500 is returned, the status code 500 is returned
+   * @returns empty array if successful
+   * @returns Error object with respective status code if unsuccessful
    */
   async updateCourse(id, course, {emailAddress, password}){
     const response = await this.api(`/courses/${id}`, 'PUT', course, true, {emailAddress, password});
+    let error ={
+      errorsArr: [],
+      status: null
+    }
     // Success
     if(response.status ===204){
       return [];
     }
     else if(response.status === 400) {
-      return response.json().then(data => data.errors);
+      return response.json().then(data => {
+        error.errorsArr = data.errors;
+        error.status = 400;
+        return error
+      });
     }
     // User does not have permission to update
     else if(response.status === 403) {
-      return 403;
+      error.status = 403
+      return error;
     }
     // The course does not exist
     else if(response.status === 404) {
-      return 404;
+      error.status =404
+      return error;
     }
     else{
-      return 500;
+      error.status = 500
+      return error
     }
   }
   /**
@@ -138,27 +162,32 @@ export default class Data {
    * @param {integer} id 
    * @param {string} emailAddress
    * @param {string} password
-   * Does not return anything if successful.
-   * If HTTP response is 403 (no permissions) returns status code of 403
-   * If HTTP response is 404 (not found) returns the status code of 404.
-   * If HTTP response of 500 is returned, the status code 500 is returned
+   * @returns empty array if successful
+   * @returns Error object with respective status code if unsuccessful
    */
   async deleteCourse(id,{emailAddress, password}){
     const response = await this.api(`/courses/${id}`, 'DELETE', null, true, {emailAddress, password});
+    let error ={
+      errorsArr: [],
+      status: null
+    }
     // No errors returned when deletion is successful
     if(response.status ===204){
       return [];
     }
     // User does not have permission to delete
     else if(response.status === 403) {
-      return 403;
+      error.status = 403;
+      return error;
     }
     // The course that the user is trying to delete does not exists.
     else if(response.status === 404) {
-      return 404;
+      error.status = 404;
+      return error;
     }
     else{
-      return 500;
+      error.status = 500;
+      return error;
     }
   }
 }

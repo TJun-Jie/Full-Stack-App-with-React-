@@ -33,14 +33,15 @@ function CreateCourse(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     data.createCourse(course, {emailAddress, password})
-      .then(errors => {
-        if(errors === 500){
+      .then(error => {
+        if(error.status === 500){
           history.push('/error');
         }
         // If there are errors, show the errors.
-        if(errors.length>0){
-          setErrors(errors);
+        else if(error.status === 400){
+          setErrors(error.errorsArr);
         }else {
+          console.log('else')
           // If successful, redirect to the index page.
           history.push('/');
         }
