@@ -28,8 +28,5 @@ The app is built using REST API and React.
 * Sequelize
 * SQ Lite
 
-## License
-MIT
-
 ## Author 
 Tai Jun Jie
