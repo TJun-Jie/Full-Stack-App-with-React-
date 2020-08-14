@@ -23,19 +23,19 @@ class UpdateCourseClass extends Component {
         else if(res.status === 404){
           this.props.history.push('/notFound');
         } else if (res.status === 500){
-          this.props.history.push('error');
+          this.props.history.push('/error');
         }
       })
       .then(course => {
+        if(this.state.courseOwner.id !== this.props.context.authenticatedUser.id){
+          this.props.history.push('/forbidden')
+        }
         if(this._isMounted){
           this.setState({title: course.title});
           this.setState({description: course.description});
           this.setState({estimatedTime: course.estimatedTime});
           this.setState({materialsNeeded: course.materialsNeeded});
           this.setState({courseOwner: course.User});
-          if(this.state.courseOwner.id !== this.props.context.authenticatedUser.id){
-            this.props.history.push('/forbidden')
-          }
 
         }
       })
@@ -70,7 +70,6 @@ class UpdateCourseClass extends Component {
       materialsNeeded: this.state.materialsNeeded,
       userId: authenticatedUser.id
     }
-    e.preventDefault();
     data.updateCourse(courseId, course, {emailAddress, password})
       .then(errors => {
         if(errors.status === 500) {
