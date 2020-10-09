@@ -1,4 +1,4 @@
 export default {
-    apiBaseUrl: 'http://localhost:5000/api',
+    apiBaseUrl: 'https://school-database-react.herokuapp.com/api',
   };
   

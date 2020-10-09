@@ -21,7 +21,7 @@ class CourseDetailClass extends Component {
        * If HTTP response is 404(Not Found) , redirect user to the notfound route.
        * If HTTP response is 500(Internal server error), redirect user to error route.
        */
-      fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
+      fetch(`https://school-database-react.herokuapp.com/api/courses/${this.props.match.params.id}`)
         .then(res => {
           if(res.status === 200){
             return res.json()

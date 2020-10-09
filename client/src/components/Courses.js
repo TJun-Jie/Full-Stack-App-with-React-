@@ -11,7 +11,7 @@ export default class Courses extends Component {
        * If HTTP response is 500(Internal server error), redirect user to error route.
        * Sets the data that is fetched to the state.
        */
-        fetch('http://localhost:5000/api/courses')
+        fetch('https://school-database-react.herokuapp.com/api/courses')
             .then(res => {
                 if(res.status===200){
                     return res.json();

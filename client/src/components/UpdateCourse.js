@@ -15,7 +15,7 @@ class UpdateCourseClass extends Component {
   // Fetch data of the course that is being updated 
   componentDidMount(){
     this._isMounted= true;
-    fetch(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
+    fetch(`https://school-database-react.herokuapp.com/api/courses/${this.props.match.params.id}`)
       .then(res => {
         if(res.status === 200){
           return res.json();
